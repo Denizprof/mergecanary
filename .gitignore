@@ -1,0 +1,5 @@
+/mergecanary
+/mergecanary.exe
+/bin/
+*.test
+*.out
