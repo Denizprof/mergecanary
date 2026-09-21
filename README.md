@@ -1,20 +1,35 @@
 # mergecanary
 
+[![ci](https://github.com/Denizprof/mergecanary/actions/workflows/ci.yml/badge.svg)](https://github.com/Denizprof/mergecanary/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/v/release/Denizprof/mergecanary)](https://github.com/Denizprof/mergecanary/releases)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 **Your parallel AI agents' branches merge cleanly. Do they still work *together*?**
 mergecanary merges every in-flight git worktree branch into a throwaway worktree, runs your real
 build/tests on the result, and if it breaks, tells you which branch caused it.
 
 It never touches your branches, worktrees or working directories.
 
-## Quickstart (about 30 seconds)
+## Install
 
-Requires Go 1.22+, git, and bash (for the demo fixture only).
+Prebuilt static binaries (Linux, macOS, Windows) are on the
+[Releases page](https://github.com/Denizprof/mergecanary/releases), with a `checksums.txt`. Or, with Go 1.22+:
 
 ```bash
-go build -o mergecanary ./cmd/mergecanary
+go install github.com/Denizprof/mergecanary/cmd/mergecanary@latest
+```
+
+Requires `git` on your PATH. `mergecanary --version` prints the version.
+
+## Quickstart (about 30 seconds)
+
+The demo fixture is a tiny Go project, so this needs Go and bash (Git Bash on Windows works).
+
+```bash
+git clone https://github.com/Denizprof/mergecanary && cd mergecanary
 bash testdata/make-fixture.sh /tmp/demo      # a tiny Go repo + 3 agent worktrees
 cd /tmp/demo/repo
-/path/to/mergecanary watch --once --check "go test ./..."
+mergecanary watch --once --check "go test ./..."
 ```
 
 The fixture has three branches that each pass their own tests and merge cleanly into `main`:
@@ -133,7 +148,7 @@ It works alongside any of them.
 ```bash
 go vet ./...
 go test ./...
-go test -race ./...   # needs cgo; CI runs it on Linux and macOS
+go test -race ./...   # needs cgo (a C compiler); CI runs it on Linux, macOS and Windows
 ```
 
 The integration tests build the fixture with `testdata/make-fixture.sh` and need `git` and `bash`

@@ -323,3 +323,12 @@ func TestSIGINTDuringCheckRemovesTempWorktree(t *testing.T) {
 		t.Errorf("worktree still registered after SIGINT (%d entries):\n%s", n, list)
 	}
 }
+
+func TestVersionFlag(t *testing.T) {
+	for _, arg := range []string{"--version", "version", "-v"} {
+		out, err := cmd(t, t.TempDir(), arg).Output()
+		if err != nil || !strings.HasPrefix(string(out), "mergecanary ") {
+			t.Errorf("%s: out=%q err=%v", arg, out, err)
+		}
+	}
+}

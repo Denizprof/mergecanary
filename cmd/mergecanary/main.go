@@ -52,6 +52,9 @@ func run(args []string, stdout, stderr io.Writer) int {
 	switch args[0] {
 	case "watch":
 		return watch(args[1:], stdout, stderr)
+	case "-v", "--version", "version":
+		fmt.Fprintln(stdout, "mergecanary", buildVersion())
+		return exitOK
 	case "-h", "--help", "help":
 		fmt.Fprint(stdout, usage)
 		newFlags(&watchOpts{}, stdout).PrintDefaults()
