@@ -26,7 +26,9 @@ func branch(t *testing.T, f testutil.Fix, name string) integrate.Branch {
 func worktreeListed(t *testing.T, f testutil.Fix, path string) bool {
 	t.Helper()
 	out := testutil.Git(t, f.Repo, "worktree", "list", "--porcelain")
-	return strings.Contains(out, filepath.ToSlash(path))
+	// Compare on the unique temp dir name: Windows may show the same dir with an
+	// 8.3 short path (RUNNER~1) in one place and the long path in git's output.
+	return strings.Contains(out, filepath.Base(filepath.Dir(path)))
 }
 
 func TestNewAndCleanup(t *testing.T) {
